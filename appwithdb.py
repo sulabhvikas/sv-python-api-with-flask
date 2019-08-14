@@ -51,6 +51,7 @@ def getBooks():
 
 #GET /books/isbn
 @app.route('/books/<int:isbn>')
+@token_required
 def getBookByISBN(isbn):
 	returnValue = Book.get_book_by_isbn(isbn)
 	return jsonify(returnValue)
@@ -64,6 +65,7 @@ def getBookByISBN(isbn):
 
 #POST a book /books
 @app.route('/books', methods = ['POST'])
+@token_required
 def addBook():
 	requestData = request.get_json()
 	if(isValidNewBook(requestData)):
@@ -81,6 +83,7 @@ def addBook():
 
 #PUT /books/123456789
 @app.route('/books/<int:isbn>', methods=['PUT'])
+@token_required
 def replaceBookByISBN(isbn):
 	request_data = request.get_json()
 	if(not isValidReplaceBook(request_data)):
@@ -97,6 +100,7 @@ def replaceBookByISBN(isbn):
 
 #PATCH /books/123456789
 @app.route('/books/<int:isbn>', methods=['PATCH'])
+@token_required
 def updateBookByISBN(isbn):
 	request_data = request.get_json()
 	if(not isValidUpdateBook(request_data)):
@@ -119,6 +123,7 @@ def updateBookByISBN(isbn):
 #DELETE /books/123456789
 #Body : {'name':"Ramayan"}
 @app.route('/books/<int:isbn>', methods=['DELETE'])
+@token_required
 def deleteBookByISBN(isbn):
 	if(Book.delete_book_by_isbn(isbn)):
 		response = Response("", status=204)
